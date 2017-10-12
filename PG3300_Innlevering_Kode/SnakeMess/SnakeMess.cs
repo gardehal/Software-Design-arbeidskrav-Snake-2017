@@ -71,7 +71,7 @@ namespace SnakeMess {
                             isGameOver = true;
                             break;
                         case (ConsoleKey.Spacebar):
-                            isPaused = false;
+                            isPaused = !isPaused;
                             break;
                         case (ConsoleKey.UpArrow):
                             if (lastDir != 2)
@@ -93,10 +93,10 @@ namespace SnakeMess {
                 }
 
                 if (!isPaused) {
-                    if (timer.ElapsedMilliseconds < 100)
+                    if (timer.ElapsedMilliseconds < 15)
                         continue;
                     timer.Restart();
-
+                     
                     snakeTail = new Point(snakeList.First());
                     snakeHead = new Point(snakeList.Last());
                     newHead = new Point(snakeHead);
