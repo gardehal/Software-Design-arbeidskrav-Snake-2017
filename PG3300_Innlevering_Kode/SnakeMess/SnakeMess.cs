@@ -19,6 +19,7 @@ namespace SnakeMess
 	{
 		public static void Main(string[] arguments)
 		{
+<<<<<<< HEAD
             // Variabler
             bool isGameOver = false,
                  isPaused = false,
@@ -62,6 +63,51 @@ namespace SnakeMess
             Stopwatch timer = new Stopwatch();
             timer.Start();
 			while (!isGameOver) {
+=======
+			bool gg = false, pause = false, inUse = false;
+			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
+			short last = newDir;
+			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
+
+			Random rng = new Random();
+			Point app = new Point();
+
+			List<Point> snake = new List<Point>();
+			snake.Add(new Point(10, 10)); 
+            snake.Add(new Point(10, 10));
+            snake.Add(new Point(10, 10)); 
+            snake.Add(new Point(10, 10));
+
+			Console.CursorVisible = false;
+			Console.Title = "Westerdals Oslo ACT - SNAKE";
+			Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(10, 10);
+            Console.Write("@");
+
+			while (true) {
+				app.X = rng.Next(0, boardW);
+                app.Y = rng.Next(0, boardH);
+				bool spot = true;
+
+				foreach (Point i in snake)
+					if (i.X == app.X && i.Y == app.Y) {
+						spot = false;
+						break;
+					}
+
+				if (spot) {
+					Console.ForegroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition(app.X, app.Y);
+                    Console.Write("$");
+					break;
+				}
+			}
+
+			Stopwatch t = new Stopwatch();
+			t.Start();
+
+			while (!gg) {
+>>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
 				if (Console.KeyAvailable) {
 					ConsoleKeyInfo cki = Console.ReadKey(true);
 					if (cki.Key == ConsoleKey.Escape)
@@ -111,6 +157,7 @@ namespace SnakeMess
 							isGameOver = true;
 						else {
 							while (true) {
+<<<<<<< HEAD
 								ranPoint.PosX = ranNum.Next(0, boardW);
                                 ranPoint.PosY = ranNum.Next(0, boardH);
 
@@ -120,12 +167,25 @@ namespace SnakeMess
 
 								if (ifBeenFound) {
 									ifFoodFound = false;
+=======
+								app.X = rng.Next(0, boardW);
+                                app.Y = rng.Next(0, boardH);
+								bool found = true;
+								foreach (Point i in snake)
+									if (i.X == app.X && i.Y == app.Y) {
+										found = false;
+										break;
+									}
+								if (found) {
+									inUse = true;
+>>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
 									break;
 								}
 							}
 						}
 					}
 
+<<<<<<< HEAD
 					if (ifFoodFound) {
 						snakeList.RemoveAt(0);
                         if (SearchList(snakeList, newHead) == true)
@@ -143,6 +203,38 @@ namespace SnakeMess
 						snakeList.Add(newHead);
                         ChangeConsole(ConsoleColor.Yellow, newHead.PosX, newHead.PosY, '@');
 						lastDir = newDir;
+=======
+					if (!inUse) {
+						snake.RemoveAt(0);
+						foreach (Point x in snake)
+							if (x.X == newH.X && x.Y == newH.Y) {
+								// Death by accidental self-cannibalism.
+								gg = true;
+								break;
+							}
+					}
+
+					if (!gg) {
+						Console.ForegroundColor = ConsoleColor.Yellow;
+						Console.SetCursorPosition(head.X, head.Y);
+                        Console.Write("0");
+
+						if (!inUse) {
+							Console.SetCursorPosition(tail.X, tail.Y);
+                            Console.Write(" ");
+						} else {
+							Console.ForegroundColor = ConsoleColor.Green;
+                            Console.SetCursorPosition(app.X, app.Y);
+                            Console.Write("$");
+							inUse = false;
+						}
+
+						snake.Add(newH);
+						Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.SetCursorPosition(newH.X, newH.Y);
+                        Console.Write("@");
+						last = newDir;
+>>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
 					}
 				}
 			}
