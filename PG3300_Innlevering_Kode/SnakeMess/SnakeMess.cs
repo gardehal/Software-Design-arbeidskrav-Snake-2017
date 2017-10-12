@@ -14,8 +14,9 @@ using System.Diagnostics;
 //          -Tomas
 //
 namespace SnakeMess {
+
     class SnakeMess {
-        public static void Main(string[] arguments)
+        public static void Main()
         {
             // Variabler
             bool isGameOver = false,
@@ -31,8 +32,11 @@ namespace SnakeMess {
             int boardW = Console.WindowWidth,
                 boardH = Console.WindowHeight;
 
-            Random ranNum = new Random();
-            Point ranPoint = new Point();
+            Random ranNum   = new Random();
+            Point ranPoint  = new Point(),
+                  snakeTail = new Point(),
+                  snakeHead = new Point(),
+                  newHead   = new Point();
 
             // Liste over point-objekter
             List<Point> snakeList = new List<Point>();
@@ -62,18 +66,30 @@ namespace SnakeMess {
             while (!isGameOver) {
                 if (Console.KeyAvailable) {
                     ConsoleKeyInfo cki = Console.ReadKey(true);
-                    if (cki.Key == ConsoleKey.Escape)
-                        isGameOver = true;
-                    else if (cki.Key == ConsoleKey.Spacebar)
-                        isPaused = !isPaused;
-                    else if (cki.Key == ConsoleKey.UpArrow && lastDir != 2)
-                        newDir = 0;
-                    else if (cki.Key == ConsoleKey.RightArrow && lastDir != 3)
-                        newDir = 1;
-                    else if (cki.Key == ConsoleKey.DownArrow && lastDir != 0)
-                        newDir = 2;
-                    else if (cki.Key == ConsoleKey.LeftArrow && lastDir != 1)
-                        newDir = 3;
+                    switch(cki.Key) {
+                        case (ConsoleKey.Escape):
+                            isGameOver = true;
+                            break;
+                        case (ConsoleKey.Spacebar):
+                            isPaused = false;
+                            break;
+                        case (ConsoleKey.UpArrow):
+                            if (lastDir != 2)
+                                newDir = 0;
+                            break;
+                        case (ConsoleKey.RightArrow):
+                            if (lastDir != 3)
+                                newDir = 1;
+                            break;
+                        case (ConsoleKey.DownArrow):
+                            if (lastDir != 0)
+                                newDir = 2;
+                            break;
+                        case (ConsoleKey.LeftArrow):
+                            if (lastDir != 1)
+                                newDir = 3;
+                            break;
+                    }
                 }
 
                 if (!isPaused) {
@@ -81,23 +97,23 @@ namespace SnakeMess {
                         continue;
                     timer.Restart();
 
-                    Point snakeTail = new Point(snakeList.First());
-                    Point snakeHead = new Point(snakeList.Last());
-                    Point newHead = new Point(snakeHead);
+                    snakeTail = new Point(snakeList.First());
+                    snakeHead = new Point(snakeList.Last());
+                    newHead = new Point(snakeHead);
 
                     switch (newDir) {
                         case 0:
-                        newHead.PosY -= 1;
-                        break;
+                            newHead.PosY -= 1;
+                            break;
                         case 1:
-                        newHead.PosX += 1;
-                        break;
+                            newHead.PosX += 1;
+                            break;
                         case 2:
-                        newHead.PosY += 1;
-                        break;
+                            newHead.PosY += 1;
+                            break;
                         default:
-                        newHead.PosX -= 1;
-                        break;
+                            newHead.PosX -= 1;
+                            break;
                     }
 
                     if (newHead.PosX < 0 || newHead.PosX >= boardW || newHead.PosY < 0 || newHead.PosY >= boardH)
@@ -155,7 +171,8 @@ namespace SnakeMess {
             Console.SetCursorPosition(10, 10);
             Console.Write("@");
         }
-
+        
+        // Funksjon til å lese gjennom en point-liste og sammenligne med et annet point objekt
         public static bool SearchList(List<Point> snakeList, Point p)
         {
             foreach (Point i in snakeList) {
