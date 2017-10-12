@@ -13,13 +13,10 @@ using System.Diagnostics;
 //
 //          -Tomas
 //
-namespace SnakeMess
-{
-	class SnakeMess
-	{
-		public static void Main(string[] arguments)
-		{
-<<<<<<< HEAD
+namespace SnakeMess {
+    class SnakeMess {
+        public static void Main(string[] arguments)
+        {
             // Variabler
             bool isGameOver = false,
                  isPaused = false,
@@ -31,214 +28,123 @@ namespace SnakeMess
             short newDir = 2,
                   lastDir = newDir;
 
-			int boardW = Console.WindowWidth,
+            int boardW = Console.WindowWidth,
                 boardH = Console.WindowHeight;
 
-			Random ranNum = new Random();
-			Point ranPoint = new Point();
+            Random ranNum = new Random();
+            Point ranPoint = new Point();
 
             // Liste over point-objekter
-			List<Point> snakeList = new List<Point>();
-            for(int i = 0; i < 4; i++)
+            List<Point> snakeList = new List<Point>();
+            for (int i = 0; i < 4; i++)
                 snakeList.Add(new Point(10, 10));
 
             // Start up funksjon
             InitializeWindow();
 
-			while (true) {
-				ranPoint.PosX = ranNum.Next(0, boardW);
+            while (true) {
+                ranPoint.PosX = ranNum.Next(0, boardW);
                 ranPoint.PosY = ranNum.Next(0, boardH);
 
-				ifVacantSpot = true;
+                ifVacantSpot = true;
 
                 if (SearchList(snakeList, ranPoint) == true)
                     ifVacantSpot = false;
 
-				if (ifVacantSpot) {
+                if (ifVacantSpot) {
                     ChangeConsole(ConsoleColor.Green, ranPoint.PosX, ranPoint.PosY, '$');
                     break;
-				}
-			}
+                }
+            }
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
-			while (!isGameOver) {
-=======
-			bool gg = false, pause = false, inUse = false;
-			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-			short last = newDir;
-			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
+            while (!isGameOver) {
+                if (Console.KeyAvailable) {
+                    ConsoleKeyInfo cki = Console.ReadKey(true);
+                    if (cki.Key == ConsoleKey.Escape)
+                        isGameOver = true;
+                    else if (cki.Key == ConsoleKey.Spacebar)
+                        isPaused = !isPaused;
+                    else if (cki.Key == ConsoleKey.UpArrow && lastDir != 2)
+                        newDir = 0;
+                    else if (cki.Key == ConsoleKey.RightArrow && lastDir != 3)
+                        newDir = 1;
+                    else if (cki.Key == ConsoleKey.DownArrow && lastDir != 0)
+                        newDir = 2;
+                    else if (cki.Key == ConsoleKey.LeftArrow && lastDir != 1)
+                        newDir = 3;
+                }
 
-			Random rng = new Random();
-			Point app = new Point();
+                if (!isPaused) {
+                    if (timer.ElapsedMilliseconds < 100)
+                        continue;
+                    timer.Restart();
 
-			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10)); 
-            snake.Add(new Point(10, 10));
-            snake.Add(new Point(10, 10)); 
-            snake.Add(new Point(10, 10));
+                    Point snakeTail = new Point(snakeList.First());
+                    Point snakeHead = new Point(snakeList.Last());
+                    Point newHead = new Point(snakeHead);
 
-			Console.CursorVisible = false;
-			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(10, 10);
-            Console.Write("@");
+                    switch (newDir) {
+                        case 0:
+                        newHead.PosY -= 1;
+                        break;
+                        case 1:
+                        newHead.PosX += 1;
+                        break;
+                        case 2:
+                        newHead.PosY += 1;
+                        break;
+                        default:
+                        newHead.PosX -= 1;
+                        break;
+                    }
 
-			while (true) {
-				app.X = rng.Next(0, boardW);
-                app.Y = rng.Next(0, boardH);
-				bool spot = true;
+                    if (newHead.PosX < 0 || newHead.PosX >= boardW || newHead.PosY < 0 || newHead.PosY >= boardH)
+                        isGameOver = true;
 
-				foreach (Point i in snake)
-					if (i.X == app.X && i.Y == app.Y) {
-						spot = false;
-						break;
-					}
-
-				if (spot) {
-					Console.ForegroundColor = ConsoleColor.Green;
-                    Console.SetCursorPosition(app.X, app.Y);
-                    Console.Write("$");
-					break;
-				}
-			}
-
-			Stopwatch t = new Stopwatch();
-			t.Start();
-
-			while (!gg) {
->>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
-				if (Console.KeyAvailable) {
-					ConsoleKeyInfo cki = Console.ReadKey(true);
-					if (cki.Key == ConsoleKey.Escape)
-						isGameOver = true;
-					else if (cki.Key == ConsoleKey.Spacebar)
-						isPaused = !isPaused;
-					else if (cki.Key == ConsoleKey.UpArrow && lastDir != 2)
-						newDir = 0;
-					else if (cki.Key == ConsoleKey.RightArrow && lastDir != 3)
-						newDir = 1;
-					else if (cki.Key == ConsoleKey.DownArrow && lastDir != 0)
-						newDir = 2;
-					else if (cki.Key == ConsoleKey.LeftArrow && lastDir != 1)
-						newDir = 3;
-				}
-
-				if (!isPaused) {
-					if (timer.ElapsedMilliseconds < 100)
-						continue;
-					timer.Restart();
-
-					Point snakeTail = new Point(snakeList.First());
-					Point snakeHead = new Point(snakeList.Last());
-					Point newHead = new Point(snakeHead);
-
-					switch (newDir) {
-						case 0:
-							newHead.PosY -= 1;
-							break;
-						case 1:
-							newHead.PosX += 1;
-							break;
-						case 2:
-							newHead.PosY += 1;
-							break;
-						default:
-							newHead.PosX -= 1;
-							break;
-					}
-
-					if (newHead.PosX < 0 || newHead.PosX >= boardW || newHead.PosY < 0 || newHead.PosY >= boardH)
-						isGameOver = true;
-
-					if (newHead.PosX == ranPoint.PosX && newHead.PosY == ranPoint.PosY) {
-						if (snakeList.Count + 1 >= boardW * boardH)
-							// No more room to place apples - game over.
-							isGameOver = true;
-						else {
-							while (true) {
-<<<<<<< HEAD
-								ranPoint.PosX = ranNum.Next(0, boardW);
+                    if (newHead.PosX == ranPoint.PosX && newHead.PosY == ranPoint.PosY) {
+                        if (snakeList.Count + 1 >= boardW * boardH)
+                            // No more room to place apples - game over.
+                            isGameOver = true;
+                        else {
+                            while (true) {
+                                ranPoint.PosX = ranNum.Next(0, boardW);
                                 ranPoint.PosY = ranNum.Next(0, boardH);
 
-								ifBeenFound = true;
+                                ifBeenFound = true;
                                 if (SearchList(snakeList, ranPoint) == true)
                                     ifBeenFound = false;
 
-								if (ifBeenFound) {
-									ifFoodFound = false;
-=======
-								app.X = rng.Next(0, boardW);
-                                app.Y = rng.Next(0, boardH);
-								bool found = true;
-								foreach (Point i in snake)
-									if (i.X == app.X && i.Y == app.Y) {
-										found = false;
-										break;
-									}
-								if (found) {
-									inUse = true;
->>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
-									break;
-								}
-							}
-						}
-					}
+                                if (ifBeenFound) {
+                                    ifFoodFound = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-<<<<<<< HEAD
-					if (ifFoodFound) {
-						snakeList.RemoveAt(0);
+                    if (ifFoodFound) {
+                        snakeList.RemoveAt(0);
                         if (SearchList(snakeList, newHead) == true)
                             isGameOver = true;
-					}
+                    }
 
-					if (!isGameOver) {
+                    if (!isGameOver) {
                         ChangeConsole(ConsoleColor.Yellow, snakeHead.PosX, snakeHead.PosY, '0');
-						if (ifFoodFound) {
+                        if (ifFoodFound) {
                             ChangeConsole(0, snakeTail.PosX, snakeTail.PosY, ' ');
-						} else {
+                        } else {
                             ChangeConsole(ConsoleColor.Green, ranPoint.PosX, ranPoint.PosY, '$');
-							ifFoodFound = true;
-						}
-						snakeList.Add(newHead);
+                            ifFoodFound = true;
+                        }
+                        snakeList.Add(newHead);
                         ChangeConsole(ConsoleColor.Yellow, newHead.PosX, newHead.PosY, '@');
-						lastDir = newDir;
-=======
-					if (!inUse) {
-						snake.RemoveAt(0);
-						foreach (Point x in snake)
-							if (x.X == newH.X && x.Y == newH.Y) {
-								// Death by accidental self-cannibalism.
-								gg = true;
-								break;
-							}
-					}
-
-					if (!gg) {
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y);
-                        Console.Write("0");
-
-						if (!inUse) {
-							Console.SetCursorPosition(tail.X, tail.Y);
-                            Console.Write(" ");
-						} else {
-							Console.ForegroundColor = ConsoleColor.Green;
-                            Console.SetCursorPosition(app.X, app.Y);
-                            Console.Write("$");
-							inUse = false;
-						}
-
-						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.SetCursorPosition(newH.X, newH.Y);
-                        Console.Write("@");
-						last = newDir;
->>>>>>> 5c4bc3d0e9197d73b7dad0534318932465f67108
-					}
-				}
-			}
-		}
+                        lastDir = newDir;
+                    }
+                }
+            }
+        }
 
         // Funksjon brukt til å initialisere startup for konsoll vinduet
         public static void InitializeWindow()
@@ -267,5 +173,5 @@ namespace SnakeMess
             Console.SetCursorPosition(xPoint, yPoint);
             Console.Write(c);
         }
-	}
+    }
 }
