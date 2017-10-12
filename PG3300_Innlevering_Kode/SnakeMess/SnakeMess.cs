@@ -32,28 +32,44 @@ namespace SnakeMess
 			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
 			short last = newDir;
 			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
+
 			Random rng = new Random();
 			Point app = new Point();
+
 			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
+			snake.Add(new Point(10, 10)); 
+            snake.Add(new Point(10, 10));
+            snake.Add(new Point(10, 10)); 
+            snake.Add(new Point(10, 10));
+
 			Console.CursorVisible = false;
 			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+			Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(10, 10);
+            Console.Write("@");
+
 			while (true) {
-				app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+				app.X = rng.Next(0, boardW);
+                app.Y = rng.Next(0, boardH);
 				bool spot = true;
+
 				foreach (Point i in snake)
 					if (i.X == app.X && i.Y == app.Y) {
 						spot = false;
 						break;
 					}
+
 				if (spot) {
-					Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+					Console.ForegroundColor = ConsoleColor.Green;
+                    Console.SetCursorPosition(app.X, app.Y);
+                    Console.Write("$");
 					break;
 				}
 			}
+
 			Stopwatch t = new Stopwatch();
 			t.Start();
+
 			while (!gg) {
 				if (Console.KeyAvailable) {
 					ConsoleKeyInfo cki = Console.ReadKey(true);
@@ -101,7 +117,8 @@ namespace SnakeMess
 							gg = true;
 						else {
 							while (true) {
-								app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+								app.X = rng.Next(0, boardW);
+                                app.Y = rng.Next(0, boardH);
 								bool found = true;
 								foreach (Point i in snake)
 									if (i.X == app.X && i.Y == app.Y) {
@@ -115,6 +132,7 @@ namespace SnakeMess
 							}
 						}
 					}
+
 					if (!inUse) {
 						snake.RemoveAt(0);
 						foreach (Point x in snake)
@@ -124,17 +142,26 @@ namespace SnakeMess
 								break;
 							}
 					}
+
 					if (!gg) {
 						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y); Console.Write("0");
+						Console.SetCursorPosition(head.X, head.Y);
+                        Console.Write("0");
+
 						if (!inUse) {
-							Console.SetCursorPosition(tail.X, tail.Y); Console.Write(" ");
+							Console.SetCursorPosition(tail.X, tail.Y);
+                            Console.Write(" ");
 						} else {
-							Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+							Console.ForegroundColor = ConsoleColor.Green;
+                            Console.SetCursorPosition(app.X, app.Y);
+                            Console.Write("$");
 							inUse = false;
 						}
+
 						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow; Console.SetCursorPosition(newH.X, newH.Y); Console.Write("@");
+						Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.SetCursorPosition(newH.X, newH.Y);
+                        Console.Write("@");
 						last = newDir;
 					}
 				}
