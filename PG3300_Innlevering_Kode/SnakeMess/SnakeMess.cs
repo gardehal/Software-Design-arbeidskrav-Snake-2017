@@ -93,7 +93,7 @@ namespace SnakeMess {
                 }
 
                 if (!isPaused) {
-                    if (timer.ElapsedMilliseconds < 15)
+                    if (timer.ElapsedMilliseconds < 100)
                         continue;
                     timer.Restart();
                      
